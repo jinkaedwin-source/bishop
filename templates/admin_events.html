@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Manage Events</h1><p>Church programs, conferences, crusades, and services.</p></section>
+<section class="section content-layout">
+  <form method="post" class="content-panel stacked-form">
+    <input name="title" placeholder="Title" required><input name="event_date" type="date" required><input name="location" placeholder="Location">
+    <select name="event_type"><option>Service</option><option>Program</option><option>Conference</option><option>Crusade</option></select>
+    <textarea name="description" placeholder="Description"></textarea><button class="btn btn-gold">Add Event</button>
+  </form>
+  <div class="content-panel">{% for item in events %}<div class="admin-row"><strong>{{ item.title }}</strong><span>{{ item.event_date }}</span><form action="{{ url_for('delete_event', item_id=item.id) }}" method="post"><button class="danger">Delete</button></form></div>{% endfor %}</div>
+</section>
+{% endblock %}

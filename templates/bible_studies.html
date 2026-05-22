@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Bible Study</h1><p>Grow in sound doctrine and practical Christian living.</p></section>
+<section class="section card-grid">
+  {% for study in studies %}
+    <article class="sermon-card"><span class="tag">{{ study.meeting_time }}</span><h3>{{ study.title }}</h3><p>{{ study.scripture }} | {{ study.teacher }}</p><p>{{ study.description }}</p></article>
+  {% endfor %}
+</section>
+{% endblock %}

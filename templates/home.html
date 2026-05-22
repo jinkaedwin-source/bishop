@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-content reveal">
+    <p class="eyebrow" data-i18n="home_welcome">Welcome to LIGHT INTERNATIONAL MINISTRY</p>
+    <h1 data-i18n="home_title">Shining the light of Christ to nations, families, and generations.</h1>
+    <p class="hero-verse"><span data-i18n="home_verse">"{{ verse_of_day.text }}"</span> <span>{{ verse_of_day.reference }}</span></p>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="{{ url_for('sermons') }}" data-i18n="watch_sermons">Watch Sermons</a>
+      <a class="btn btn-light" href="{{ url_for('prayer') }}" data-i18n="submit_prayer">Submit Prayer Request</a>
+    </div>
+  </div>
+</section>
+
+<section class="section intro-grid">
+  <div>
+    <p class="eyebrow" data-i18n="mission_label">Mission</p>
+    <h2 data-i18n="mission_title">To lead people into a living relationship with Jesus Christ.</h2>
+    <p data-i18n="mission_text">We proclaim the gospel, teach the Word, nurture believers, strengthen families, and serve communities with compassion and truth.</p>
+  </div>
+  <div>
+    <p class="eyebrow" data-i18n="vision_label">Vision</p>
+    <h2 data-i18n="vision_title">A Christ-centered church carrying light to the world.</h2>
+    <p data-i18n="vision_text">Our vision is to raise mature disciples who worship deeply, pray faithfully, and live as witnesses of God's kingdom in every sphere.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Live Highlights</p>
+    <h2>Fresh word for this season</h2>
+  </div>
+  <div class="card-grid">
+    {% for sermon in featured_sermons %}
+      <article class="sermon-card reveal">
+        <span class="tag">{{ sermon.category or 'Sermon' }}</span>
+        <h3>{{ sermon.title }}</h3>
+        <p>{{ sermon.summary }}</p>
+        <a href="{{ url_for('sermon_detail', sermon_id=sermon.id) }}">Open sermon</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="section-heading">
+    <p class="eyebrow">Latest Sermons</p>
+    <h2>Teaching, worship, and discipleship</h2>
+  </div>
+  <div class="media-grid">
+    {% for sermon in latest_sermons %}
+      <article class="media-card">
+        <div class="media-thumb" style="background-image:url('{{ sermon.thumbnail if sermon.thumbnail.startswith('http') else url_for('static', filename=sermon.thumbnail) if sermon.thumbnail else 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80' }}')"></div>
+        <div>
+          <span class="tag">{{ sermon.scripture }}</span>
+          <h3>{{ sermon.title }}</h3>
+          <p>{{ sermon.summary }}</p>
+          <a href="{{ url_for('sermon_detail', sermon_id=sermon.id) }}">Listen or watch</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section split">
+  <div>
+    <p class="eyebrow">Daily Devotionals</p>
+    <h2>Bible-centered encouragement for every day.</h2>
+    {% for item in devotionals %}
+      <div class="mini-item">
+        <strong>{{ item.title }}</strong>
+        <span>{{ item.scripture }}</span>
+        <p>{{ item.content }}</p>
+      </div>
+    {% endfor %}
+  </div>
+  <div>
+    <p class="eyebrow">Bible Study</p>
+    <h2>Grow in the Word together.</h2>
+    {% for study in studies %}
+      <div class="mini-item">
+        <strong>{{ study.title }}</strong>
+        <span>{{ study.meeting_time }}</span>
+        <p>{{ study.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="section-heading">
+    <p class="eyebrow">Conferences & Crusades</p>
+    <h2>Upcoming ministry gatherings</h2>
+  </div>
+  <div class="timeline">
+    {% for event in events %}
+      <div class="timeline-item">
+        <span>{{ event.event_date }}</span>
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.location }} - {{ event.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Testimonies</p>
+    <h2>God is working among His people</h2>
+  </div>
+  <div class="card-grid">
+    {% for testimony in testimonies %}
+      <article class="quote-card">
+        <p>"{{ testimony.testimony }}"</p>
+        <strong>{{ testimony.name }}</strong>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section privacy-section">
+  <div class="content-panel">
+    <p class="eyebrow">Privacy Policy</p>
+    <h2>Your privacy matters to LIGHT INTERNATIONAL MINISTRY.</h2>
+    <p>Information submitted through prayer requests, contact forms, comments, user accounts, and newsletter subscriptions is used only for ministry communication, pastoral care, website participation, and church administration.</p>
+    <p>We do not sell personal information. Prayer requests are treated with care and shared only with trusted ministry leaders or prayer team members when needed for prayer and follow-up.</p>
+    <p>For public launch, update this section with your official church privacy policy, data retention rules, and contact details for privacy-related questions.</p>
+  </div>
+</section>
+
+<section class="section alt support-section">
+  <div class="section-heading">
+    <p class="eyebrow">Support The Ministry</p>
+    <h2>Partner with the gospel work of LIGHT INTERNATIONAL MINISTRY.</h2>
+    <p>Your giving supports evangelism, discipleship, prayer ministry, church programs, outreach, and compassionate service.</p>
+  </div>
+  <div class="support-grid">
+    <article class="support-card">
+      <h3>Bank Transfer</h3>
+      <p><strong>Bank Name:</strong> Your Church Bank Name</p>
+      <p><strong>Account Name:</strong> LIGHT INTERNATIONAL MINISTRY</p>
+      <p><strong>Account Number:</strong> 0000000000</p>
+      <p><strong>SWIFT/BIC:</strong> LIGHTXXXX</p>
+    </article>
+    <article class="support-card">
+      <h3>PayPal</h3>
+      <p><strong>PayPal Email:</strong> giving@lightinternationalministry.org</p>
+      <p><strong>Reference:</strong> Offering, Tithe, Mission, or Partnership</p>
+    </article>
+    <article class="support-card">
+      <h3>Cameroon Orange Money</h3>
+      <p><strong>Name:</strong> LIGHT INTERNATIONAL MINISTRY</p>
+      <p><strong>Number:</strong> +237 6XX XXX XXX</p>
+      <p><strong>Reference:</strong> Ministry Support</p>
+    </article>
+    <article class="support-card">
+      <h3>MTN Mobile Money</h3>
+      <p><strong>Name:</strong> LIGHT INTERNATIONAL MINISTRY</p>
+      <p><strong>Number:</strong> +237 6XX XXX XXX</p>
+      <p><strong>Reference:</strong> Ministry Support</p>
+    </article>
+    <article class="support-card">
+      <h3>Digital Wallet</h3>
+      <p><strong>Wallet:</strong> Add your preferred wallet provider</p>
+      <p><strong>Wallet ID:</strong> light-ministry-wallet</p>
+      <p><strong>Note:</strong> Confirm details with the ministry office before sending.</p>
+    </article>
+  </div>
+  <div class="support-action">
+    <a class="btn btn-gold" href="{{ url_for('partner') }}">Partner With Us Worldwide</a>
+  </div>
+</section>
+
+<section class="section gallery">
+  <div class="section-heading">
+    <p class="eyebrow">Church Gallery</p>
+    <h2>Life in worship and fellowship</h2>
+  </div>
+  <div class="gallery-grid">
+    {% for image in gallery %}
+      <figure>
+        <img src="{{ image.image_path if image.image_path.startswith('http') else url_for('static', filename=image.image_path) }}" alt="{{ image.title }}" loading="lazy">
+        <figcaption>{{ image.title }}</figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

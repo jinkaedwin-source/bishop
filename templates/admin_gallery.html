@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Upload Gallery Images</h1><p>Add real church photos and ministry moments.</p></section>
+<section class="section content-layout">
+  <form method="post" enctype="multipart/form-data" class="content-panel stacked-form"><input name="title" placeholder="Image title" required><input type="file" name="image" required><button class="btn btn-gold">Upload</button></form>
+  <div class="gallery-grid">{% for item in gallery %}<figure><img src="{{ item.image_path if item.image_path.startswith('http') else url_for('static', filename=item.image_path) }}" alt="{{ item.title }}"><figcaption>{{ item.title }}</figcaption></figure>{% endfor %}</div>
+</section>
+{% endblock %}

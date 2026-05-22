@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Categories</h1><p>Explore ministry teaching by theme.</p></section>
+<section class="section card-grid">
+  {% for category in categories %}
+    <a class="sermon-card link-card" href="{{ url_for('sermons', category=category.name) }}"><h3>{{ category.name }}</h3><p>{{ category.description }}</p></a>
+  {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Admin Dashboard</h1><p>Manage ministry content, events, categories, sermons, and gallery images.</p></section>
+<section class="section">
+  <div class="stats">
+    <div><strong>{{ stats.sermons }}</strong><span>Sermons</span></div>
+    <div><strong>{{ stats.devotionals }}</strong><span>Devotionals</span></div>
+    <div><strong>{{ stats.events }}</strong><span>Events</span></div>
+    <div><strong>{{ stats.prayers }}</strong><span>Prayer Requests</span></div>
+    <div><strong>{{ stats.security_alerts }}</strong><span>Security Alerts</span></div>
+  </div>
+  <div class="admin-links">
+    <a class="btn btn-gold" href="{{ url_for('admin_sermons') }}">Manage Sermons</a>
+    <a class="btn btn-light" href="{{ url_for('admin_devotionals') }}">Manage Devotionals</a>
+    <a class="btn btn-light" href="{{ url_for('admin_events') }}">Manage Events</a>
+    <a class="btn btn-light" href="{{ url_for('admin_categories') }}">Manage Categories</a>
+    <a class="btn btn-light" href="{{ url_for('admin_gallery') }}">Upload Gallery</a>
+    <a class="btn btn-light" href="{{ url_for('admin_security') }}">Security Center</a>
+  </div>
+  <div class="content-panel security-summary">
+    <h2>Recent Security Activity</h2>
+    {% for alert in recent_alerts %}
+      <div class="admin-row">
+        <div>
+          <strong>{{ alert.event_type.replace('_', ' ').title() }}</strong>
+          <p>{{ alert.message }} {% if alert.email %}({{ alert.email }}){% endif %}</p>
+        </div>
+        <span class="severity {{ alert.severity }}">{{ alert.severity }}</span>
+      </div>
+    {% else %}
+      <p>No security activity has been logged yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

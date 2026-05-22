@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Events & Church Programs</h1><p>Services, conferences, crusades, and ministry programs.</p></section>
+<section class="section timeline">
+  {% for event in events %}
+    <div class="timeline-item"><span>{{ event.event_type }} | {{ event.event_date }}</span><h3>{{ event.title }}</h3><p>{{ event.location }}</p><p>{{ event.description }}</p></div>
+  {% endfor %}
+</section>
+{% endblock %}

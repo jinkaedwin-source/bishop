@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ sermon.title }} - LIGHT INTERNATIONAL MINISTRY{% endblock %}
+{% block content %}
+<section class="page-hero"><h1>{{ sermon.title }}</h1><p>{{ sermon.scripture }} | {{ sermon.preacher }}</p></section>
+<section class="section content-layout">
+  <article class="content-panel">
+    <span class="tag">{{ sermon.category }}</span>
+    <h2>{{ sermon.summary }}</h2>
+    <p>{{ sermon.content }}</p>
+    {% if sermon.audio_url %}<audio controls src="{{ sermon.audio_url }}" class="player"></audio>{% endif %}
+    {% if sermon.video_url %}
+      <div class="video-wrap"><iframe src="{{ sermon.video_url }}" title="{{ sermon.title }}" allowfullscreen loading="lazy"></iframe></div>
+    {% endif %}
+  </article>
+  <aside class="content-panel">
+    <h3>Comments</h3>
+    <form method="post" class="stacked-form">
+      <input name="name" placeholder="Your name" required>
+      <textarea name="body" placeholder="Write a comment" required></textarea>
+      <button class="btn btn-gold" type="submit">Post Comment</button>
+    </form>
+    {% for comment in comments %}
+      <div class="comment"><strong>{{ comment.user_name }}</strong><p>{{ comment.body }}</p></div>
+    {% else %}
+      <p>No comments yet.</p>
+    {% endfor %}
+  </aside>
+</section>
+{% endblock %}

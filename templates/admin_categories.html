@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Manage Categories</h1><p>Faith, Prayer, Salvation, Worship, Youth, Marriage, Deliverance, and more.</p></section>
+<section class="section content-layout">
+  <form method="post" class="content-panel stacked-form"><input name="name" placeholder="Category name" required><textarea name="description" placeholder="Description"></textarea><button class="btn btn-gold">Add Category</button></form>
+  <div class="content-panel">{% for item in categories %}<div class="admin-row"><strong>{{ item.name }}</strong><form action="{{ url_for('delete_category', item_id=item.id) }}" method="post"><button class="danger">Delete</button></form></div>{% endfor %}</div>
+</section>
+{% endblock %}

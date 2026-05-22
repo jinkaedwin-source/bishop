@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Manage Sermons</h1><p>Add audio/video sermon content and thumbnails.</p></section>
+<section class="section content-layout">
+  <form method="post" enctype="multipart/form-data" class="content-panel stacked-form">
+    <input name="title" placeholder="Title" required><input name="preacher" placeholder="Preacher" required><input name="scripture" placeholder="Scripture">
+    <select name="category_id"><option value="">Category</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+    <input name="summary" placeholder="Short summary"><textarea name="content" placeholder="Full sermon notes"></textarea>
+    <input name="audio_url" placeholder="Audio URL"><input name="video_url" placeholder="YouTube embed URL">
+    <label class="check"><input type="checkbox" name="featured"> Feature on homepage</label><label>Thumbnail <input type="file" name="thumbnail"></label>
+    <button class="btn btn-gold">Add Sermon</button>
+  </form>
+  <div class="content-panel">{% for item in sermons %}<div class="admin-row"><strong>{{ item.title }}</strong><form action="{{ url_for('delete_sermon', item_id=item.id) }}" method="post"><button class="danger">Delete</button></form></div>{% endfor %}</div>
+</section>
+{% endblock %}

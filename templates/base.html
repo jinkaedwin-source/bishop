@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LIGHT INTERNATIONAL MINISTRY is a Christian church and ministry platform for sermons, devotionals, prayer, events, missions, and worship.">
+  <meta name="theme-color" content="#7a4b28">
+  <title>{% block title %}LIGHT INTERNATIONAL MINISTRY{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('home') }}">
+      <span class="brand-mark">L</span>
+      <span>LIGHT INTERNATIONAL MINISTRY</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Open menu">Menu</button>
+    <nav class="nav">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('sermons') }}">Sermons</a>
+      <a href="{{ url_for('devotionals') }}">Devotionals</a>
+      <a href="{{ url_for('events') }}">Events</a>
+      <a href="{{ url_for('prayer') }}">Prayer</a>
+      <a href="{{ url_for('partner') }}">Partner</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      {% if session.get('is_admin') %}<a href="{{ url_for('admin_dashboard') }}">Admin</a>{% endif %}
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </nav>
+    <div class="language-switcher" aria-label="Language selector">
+      <label for="language-select">Language</label>
+      <select id="language-select">
+        <option value="en">English</option>
+        <option value="fr">French</option>
+        <option value="es">Spanish</option>
+      </select>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <section class="ai-chat" aria-label="AI live chat with BISHOP">
+    <button class="ai-chat-toggle" type="button" aria-expanded="false">
+      <span>BISHOP</span>
+      <small>AI Ministry Help</small>
+    </button>
+    <div class="ai-chat-panel" hidden>
+      <div class="ai-chat-head">
+        <div>
+          <strong>BISHOP</strong>
+          <span>Prayer, guidance, and ministry help</span>
+        </div>
+        <button class="ai-chat-close" type="button" aria-label="Close chat">x</button>
+      </div>
+      <div class="ai-chat-body" id="ai-chat-body">
+        <div class="ai-message bishop">
+          Peace be with you. I am BISHOP. I can offer short prayers and guide you to sermons, devotionals, events, prayer requests, partnership, and ministry information.
+        </div>
+      </div>
+      <form class="ai-chat-form">
+        <input id="ai-chat-input" type="text" placeholder="Ask BISHOP for prayer or site help" autocomplete="off" maxlength="700">
+        <button class="btn btn-gold" type="submit">Send</button>
+      </form>
+      <p class="ai-chat-note">BISHOP will not provide admin logins, private records, credentials, or confidential site information.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div>
+      <h3>LIGHT INTERNATIONAL MINISTRY</h3>
+      <p>Raising believers who shine with the light of Christ through worship, discipleship, prayer, and compassionate mission.</p>
+      <p class="service-times">Service Times: Sunday 9:00 AM | Wednesday Bible Study 6:30 PM | Friday Prayer 7:00 PM</p>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <p><a href="#">Facebook</a> | <a href="#">YouTube</a> | <a href="#">Instagram</a> | <a href="#">X</a></p>
+      <p>Email: info@lightinternationalministry.org</p>
+    </div>
+    <form action="{{ url_for('newsletter') }}" method="post" class="newsletter">
+      <label for="newsletter-email">Newsletter</label>
+      <div>
+        <input id="newsletter-email" name="email" type="email" placeholder="Email address" required>
+        <button class="btn btn-gold" type="submit">Subscribe</button>
+      </div>
+    </form>
+    <p class="copyright">&copy; {{ current_year }} LIGHT INTERNATIONAL MINISTRY. All rights reserved.</p>
+  </footer>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

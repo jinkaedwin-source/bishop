@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Devotionals - LIGHT INTERNATIONAL MINISTRY{% endblock %}
+{% block content %}
+<section class="page-hero"><h1>Daily Devotionals</h1><p>Scripture, reflection, and prayer for daily spiritual growth.</p></section>
+<section class="section">
+  <form class="filter-bar" method="get"><input name="q" value="{{ q }}" placeholder="Search devotionals"><button class="btn btn-gold">Search</button></form>
+  <div class="card-grid">
+    {% for item in devotionals %}
+      <article class="sermon-card">
+        <span class="tag">{{ item.scripture }}</span>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.content }}</p>
+        <form action="{{ url_for('devotional_comment', devotional_id=item.id) }}" method="post" class="stacked-form compact">
+          <input name="name" placeholder="Name" required>
+          <textarea name="body" placeholder="Comment" required></textarea>
+          <button class="btn btn-light" type="submit">Comment</button>
+        </form>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

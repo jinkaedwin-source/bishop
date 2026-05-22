@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Sermons - LIGHT INTERNATIONAL MINISTRY{% endblock %}
+{% block content %}
+<section class="page-hero"><h1>Sermons</h1><p>Search sermons by title, scripture, topic, or category.</p></section>
+<section class="section">
+  <form class="filter-bar" method="get">
+    <input name="q" value="{{ q }}" placeholder="Search sermons">
+    <select name="category">
+      <option value="">All categories</option>
+      {% for category in categories %}
+        <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-gold" type="submit">Search</button>
+  </form>
+  <div class="media-grid">
+    {% for sermon in sermons %}
+      <article class="media-card">
+        <div class="media-thumb" style="background-image:url('{{ sermon.thumbnail if sermon.thumbnail.startswith('http') else url_for('static', filename=sermon.thumbnail) if sermon.thumbnail else 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80' }}')"></div>
+        <div><span class="tag">{{ sermon.category }}</span><h3>{{ sermon.title }}</h3><p>{{ sermon.summary }}</p><a href="{{ url_for('sermon_detail', sermon_id=sermon.id) }}">Open sermon</a></div>
+      </article>
+    {% else %}
+      <p>No sermons found.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

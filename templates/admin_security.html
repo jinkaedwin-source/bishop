@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Security Center - LIGHT INTERNATIONAL MINISTRY{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <h1>Security Center</h1>
+  <p>Monitor login activity, failed attempts, blocked access, and basic protection settings for the ministry website.</p>
+</section>
+
+<section class="section">
+  <div class="stats">
+    <div><strong>{{ failed_last_day }}</strong><span>Failed Logins Today</span></div>
+    <div><strong>{{ blocked_last_day }}</strong><span>Blocked Attempts Today</span></div>
+    <div><strong>{{ max_failed }}</strong><span>Allowed Failed Attempts</span></div>
+    <div><strong>{{ lockout_minutes }}</strong><span>Lockout Minutes</span></div>
+  </div>
+
+  <div class="content-panel security-settings">
+    <p class="eyebrow">Protection Settings</p>
+    <h2>Current Security Controls</h2>
+    <ul>
+      <li>Admin and user passwords are stored as secure hashes.</li>
+      <li>Repeated failed logins are blocked for {{ lockout_minutes }} minutes after {{ max_failed }} attempts.</li>
+      <li>Security headers are added to every response.</li>
+      <li>Uploads are restricted to approved image, video, audio, and document types.</li>
+      <li>Admin pages require an authenticated admin session.</li>
+    </ul>
+    <p class="form-help">For public launch, also use HTTPS, strong admin passwords, regular database backups, CSRF protection, and hosting-level firewall rules.</p>
+  </div>
+
+  <div class="content-panel">
+    <h2>Security Alerts & Login History</h2>
+    {% for event in events %}
+      <div class="admin-row">
+        <div>
+          <strong>{{ event.event_type.replace('_', ' ').title() }}</strong>
+          <p>{{ event.message }}</p>
+          <p class="form-help">{{ event.email or 'No email' }} | {{ event.ip_address or 'No IP' }} | {{ event.created_at }}</p>
+        </div>
+        <span class="severity {{ event.severity }}">{{ event.severity }}</span>
+      </div>
+    {% else %}
+      <p>No security events have been recorded yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

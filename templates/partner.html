@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Partner With Us - LIGHT INTERNATIONAL MINISTRY{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <h1>Partner With Us</h1>
+  <p>Join LIGHT INTERNATIONAL MINISTRY as a prayer, mission, media, outreach, or financial partner from anywhere in the world.</p>
+</section>
+
+<section class="section split">
+  <div class="content-panel">
+    <p class="eyebrow">Worldwide Partnership</p>
+    <h2>Stand with the ministry in prayer, service, and gospel outreach.</h2>
+    <p>Partners help us reach communities with biblical teaching, evangelism, discipleship, prayer support, digital ministry, conferences, and compassionate care.</p>
+    <div class="mini-item">
+      <strong>Prayer Partners</strong>
+      <span>Intercede for the ministry, pastors, leaders, families, and mission fields.</span>
+    </div>
+    <div class="mini-item">
+      <strong>Mission & Outreach Partners</strong>
+      <span>Support evangelism, conferences, crusades, and community ministry.</span>
+    </div>
+    <div class="mini-item">
+      <strong>Media & Digital Partners</strong>
+      <span>Help spread sermons, devotionals, and Bible teaching online.</span>
+    </div>
+  </div>
+
+  <form method="post" class="content-panel stacked-form">
+    <input name="name" placeholder="Full name" required>
+    <input name="email" type="email" placeholder="Email address" required>
+    <input name="phone" placeholder="Phone or WhatsApp number">
+    <input name="country" placeholder="Country" required>
+    <input name="city" placeholder="City">
+    <select name="partnership_type">
+      <option value="">Select partnership area</option>
+      <option>Prayer Partner</option>
+      <option>Financial Partner</option>
+      <option>Mission and Outreach Partner</option>
+      <option>Media and Digital Ministry Partner</option>
+      <option>Conference and Crusade Partner</option>
+      <option>Volunteer Partner</option>
+    </select>
+    <textarea name="message" placeholder="Tell us how you would like to partner with the ministry"></textarea>
+    <button class="btn btn-gold" type="submit">Submit Partnership Form</button>
+  </form>
+</section>
+{% endblock %}

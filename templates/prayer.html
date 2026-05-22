@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero"><h1>Prayer Request</h1><p>Submit your request. Our prayer team will stand with you in faith.</p></section>
+<section class="section narrow">
+  <form method="post" enctype="multipart/form-data" class="content-panel stacked-form">
+    <input name="name" placeholder="Full name" required>
+    <input name="email" type="email" placeholder="Email address">
+    <textarea name="message" placeholder="How can we pray with you?" required></textarea>
+    <label>
+      Upload an optional file
+      <input name="attachment" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.txt,.rtf">
+    </label>
+    <p class="form-help">Accepted files: images, videos, PDF, Word documents, text, and RTF files.</p>
+    <button class="btn btn-gold" type="submit">Send Prayer Request</button>
+  </form>
+</section>
+{% endblock %}

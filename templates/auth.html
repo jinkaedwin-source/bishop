@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <h1>{% if mode == 'register' %}Create Account{% elif mode == 'admin' %}Admin Login{% else %}Login{% endif %}</h1>
+  <p>Access member features and ministry administration.</p>
+</section>
+<section class="section narrow">
+  <form method="post" class="content-panel stacked-form">
+    {% if mode == 'register' %}<input name="name" placeholder="Full name" required>{% endif %}
+    <input name="email" type="email" placeholder="Email address" required>
+    <input name="password" type="password" placeholder="Password" required>
+    <button class="btn btn-gold" type="submit">{% if mode == 'register' %}Register{% else %}Login{% endif %}</button>
+    {% if mode == 'login' %}<p><a href="{{ url_for('register') }}">Create a user account</a> | <a href="{{ url_for('admin_login') }}">Admin login</a></p>{% endif %}
+  </form>
+</section>
+{% endblock %}

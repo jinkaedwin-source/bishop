@@ -22,6 +22,7 @@ h3 { font-size: 1.35rem; }
 .site-header { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 5vw; background: rgba(255, 253, 249, 0.92); backdrop-filter: blur(18px); border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 800; letter-spacing: 0; }
 .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: #fff; background: linear-gradient(135deg, var(--gold), var(--wine)); }
+.site-logo { width: auto; height: 55px; object-fit: contain; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; font-size: .94rem; }
 .nav a { color: var(--ink); font-weight: 700; }
 .menu-toggle { display: none; }
@@ -83,6 +84,7 @@ textarea { min-height: 130px; resize: vertical; }
 .stats strong { display: block; font-size: 2rem; color: var(--wine); }
 .admin-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .security-summary { margin-top: 24px; }
+.logo-upload-panel { margin-top: 24px; }
 .security-settings ul { padding-left: 20px; }
 .severity { display: inline-flex; align-items: center; min-height: 28px; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; font-size: .72rem; font-weight: 900; background: var(--warm); color: var(--wine); }
 .severity.high, .severity.critical { color: #fff; background: #b42318; }

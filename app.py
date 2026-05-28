@@ -39,6 +39,7 @@ ALLOWED_EXTENSIONS = {
     "txt",
     "rtf",
 }
+IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "change-this-secret-key-before-production")
@@ -64,6 +65,10 @@ def close_db(error=None):
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def allowed_image(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in IMAGE_EXTENSIONS
 
 
 def save_upload(file, folder):
@@ -750,6 +755,22 @@ def admin_dashboard():
         "SELECT * FROM security_events ORDER BY created_at DESC LIMIT 5"
     ).fetchall()
     return render_template("admin.html", stats=stats, recent_alerts=recent_alerts)
+
+
+@app.route("/admin/upload-logo", methods=["POST"])
+@admin_required
+def upload_logo():
+    logo = request.files.get("logo")
+    if not logo or not logo.filename:
+        flash("Please choose a logo image to upload.", "error")
+        return redirect(url_for("admin_dashboard"))
+    if not allowed_image(logo.filename):
+        flash("Logo must be a PNG, JPG, JPEG, GIF, or WEBP image.", "error")
+        return redirect(url_for("admin_dashboard"))
+
+    logo.save(os.path.join(BASE_DIR, "static", "logo.jpeg"))
+    flash("Logo uploaded successfully.", "success")
+    return redirect(url_for("admin_dashboard"))
 
 
 @app.route("/admin/security")

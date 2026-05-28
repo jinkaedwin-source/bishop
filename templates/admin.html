@@ -17,6 +17,13 @@
     <a class="btn btn-light" href="{{ url_for('admin_gallery') }}">Upload Gallery</a>
     <a class="btn btn-light" href="{{ url_for('admin_security') }}">Security Center</a>
   </div>
+  <div class="content-panel logo-upload-panel">
+    <h2>Upload Logo</h2>
+    <form action="{{ url_for('upload_logo') }}" method="post" enctype="multipart/form-data" class="stacked-form">
+      <input type="file" name="logo" accept="image/*" required>
+      <button class="btn btn-gold" type="submit">Upload Logo</button>
+    </form>
+  </div>
   <div class="content-panel security-summary">
     <h2>Recent Security Activity</h2>
     {% for alert in recent_alerts %}

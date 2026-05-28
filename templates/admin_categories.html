@@ -2,7 +2,29 @@
 {% block content %}
 <section class="page-hero"><h1>Manage Categories</h1><p>Faith, Prayer, Salvation, Worship, Youth, Marriage, Deliverance, and more.</p></section>
 <section class="section content-layout">
-  <form method="post" class="content-panel stacked-form"><input name="name" placeholder="Category name" required><textarea name="description" placeholder="Description"></textarea><button class="btn btn-gold">Add Category</button></form>
-  <div class="content-panel">{% for item in categories %}<div class="admin-row"><strong>{{ item.name }}</strong><form action="{{ url_for('delete_category', item_id=item.id) }}" method="post"><button class="danger">Delete</button></form></div>{% endfor %}</div>
+  <form method="post" class="content-panel stacked-form">
+    <input name="name" placeholder="Category name" required>
+    <textarea name="description" placeholder="Description"></textarea>
+    <button class="btn btn-gold">Add Category</button>
+  </form>
+  <div class="content-panel admin-editor-list">
+    {% for item in categories %}
+      <article class="admin-editor">
+        <form action="{{ url_for('save_category', item_id=item.id) }}" method="post" class="stacked-form compact">
+          <div class="admin-editor-head">
+            <strong>Edit Category</strong>
+          </div>
+          <input name="name" value="{{ item.name }}" placeholder="Category name" required>
+          <textarea name="description" placeholder="Description">{{ item.description or '' }}</textarea>
+          <button class="btn btn-gold" type="submit">Save Category</button>
+        </form>
+        <form action="{{ url_for('delete_category', item_id=item.id) }}" method="post" class="admin-delete-form">
+          <button class="danger" type="submit">Delete</button>
+        </form>
+      </article>
+    {% else %}
+      <p>No categories have been added yet.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

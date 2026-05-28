@@ -1,12 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="page-hero"><h1>Manage Devotionals</h1><p>Add, review, and remove daily devotionals.</p></section>
+<section class="page-hero"><h1>Manage Devotionals</h1><p>Add, review, and save daily devotionals.</p></section>
 <section class="section content-layout">
   <form method="post" class="content-panel stacked-form">
-    <input name="title" placeholder="Title" required><input name="scripture" placeholder="Scripture">
-    <select name="category_id"><option value="">Category</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
-    <textarea name="content" placeholder="Devotional content" required></textarea><button class="btn btn-gold">Add Devotional</button>
+    <input name="title" placeholder="Title" required>
+    <input name="scripture" placeholder="Scripture">
+    <select name="category_id">
+      <option value="">Category</option>
+      {% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+    </select>
+    <textarea name="content" placeholder="Devotional content" required></textarea>
+    <button class="btn btn-gold">Add Devotional</button>
   </form>
-  <div class="content-panel">{% for item in devotionals %}<div class="admin-row"><strong>{{ item.title }}</strong><form action="{{ url_for('delete_devotional', item_id=item.id) }}" method="post"><button class="danger">Delete</button></form></div>{% endfor %}</div>
+  <div class="content-panel admin-editor-list">
+    {% for item in devotionals %}
+      <article class="admin-editor">
+        <form action="{{ url_for('save_devotional', item_id=item.id) }}" method="post" class="stacked-form compact">
+          <div class="admin-editor-head">
+            <strong>Edit Devotional</strong>
+            <span>{{ item.created_at }}</span>
+          </div>
+          <input name="title" value="{{ item.title }}" placeholder="Title" required>
+          <input name="scripture" value="{{ item.scripture or '' }}" placeholder="Scripture">
+          <select name="category_id">
+            <option value="">Category</option>
+            {% for c in categories %}
+              <option value="{{ c.id }}" {% if item.category_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+          <textarea name="content" placeholder="Devotional content" required>{{ item.content }}</textarea>
+          <button class="btn btn-gold" type="submit">Save Devotional</button>
+        </form>
+        <form action="{{ url_for('delete_devotional', item_id=item.id) }}" method="post" class="admin-delete-form">
+          <button class="danger" type="submit">Delete</button>
+        </form>
+      </article>
+    {% else %}
+      <p>No devotionals have been added yet.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

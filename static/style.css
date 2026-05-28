@@ -83,6 +83,13 @@ textarea { min-height: 130px; resize: vertical; }
 .stats div { padding: 24px; border-radius: 8px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); }
 .stats strong { display: block; font-size: 2rem; color: var(--wine); }
 .admin-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.admin-editor-list { display: grid; gap: 18px; }
+.admin-editor { display: grid; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.admin-editor:last-child { padding-bottom: 0; border-bottom: 0; }
+.admin-editor-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: .88rem; }
+.admin-editor-head strong { color: var(--wine); font-size: 1rem; }
+.admin-delete-form { display: flex; justify-content: flex-end; }
+.admin-preview { width: 100%; max-height: 220px; object-fit: cover; border: 1px solid var(--line); border-radius: 8px; }
 .security-summary { margin-top: 24px; }
 .logo-upload-panel { margin-top: 24px; }
 .security-settings ul { padding-left: 20px; }

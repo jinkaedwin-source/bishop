@@ -3,10 +3,39 @@
 <section class="page-hero"><h1>Manage Events</h1><p>Church programs, conferences, crusades, and services.</p></section>
 <section class="section content-layout">
   <form method="post" class="content-panel stacked-form">
-    <input name="title" placeholder="Title" required><input name="event_date" type="date" required><input name="location" placeholder="Location">
+    <input name="title" placeholder="Title" required>
+    <input name="event_date" type="date" required>
+    <input name="location" placeholder="Location">
     <select name="event_type"><option>Service</option><option>Program</option><option>Conference</option><option>Crusade</option></select>
-    <textarea name="description" placeholder="Description"></textarea><button class="btn btn-gold">Add Event</button>
+    <textarea name="description" placeholder="Description"></textarea>
+    <button class="btn btn-gold">Add Event</button>
   </form>
-  <div class="content-panel">{% for item in events %}<div class="admin-row"><strong>{{ item.title }}</strong><span>{{ item.event_date }}</span><form action="{{ url_for('delete_event', item_id=item.id) }}" method="post"><button class="danger">Delete</button></form></div>{% endfor %}</div>
+  <div class="content-panel admin-editor-list">
+    {% for item in events %}
+      <article class="admin-editor">
+        <form action="{{ url_for('save_event', item_id=item.id) }}" method="post" class="stacked-form compact">
+          <div class="admin-editor-head">
+            <strong>Edit Event</strong>
+            <span>{{ item.event_date }}</span>
+          </div>
+          <input name="title" value="{{ item.title }}" placeholder="Title" required>
+          <input name="event_date" type="date" value="{{ item.event_date }}" required>
+          <input name="location" value="{{ item.location or '' }}" placeholder="Location">
+          <select name="event_type">
+            {% for event_type in ["Service", "Program", "Conference", "Crusade"] %}
+              <option {% if item.event_type == event_type %}selected{% endif %}>{{ event_type }}</option>
+            {% endfor %}
+          </select>
+          <textarea name="description" placeholder="Description">{{ item.description or '' }}</textarea>
+          <button class="btn btn-gold" type="submit">Save Event</button>
+        </form>
+        <form action="{{ url_for('delete_event', item_id=item.id) }}" method="post" class="admin-delete-form">
+          <button class="danger" type="submit">Delete</button>
+        </form>
+      </article>
+    {% else %}
+      <p>No events have been added yet.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

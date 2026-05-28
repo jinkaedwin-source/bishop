@@ -841,6 +841,40 @@ def delete_sermon(item_id):
     return redirect(url_for("admin_sermons"))
 
 
+@app.route("/admin/sermon/<int:item_id>/save", methods=["POST"])
+@admin_required
+def save_sermon(item_id):
+    db = get_db()
+    current = db.execute("SELECT thumbnail FROM sermons WHERE id = ?", (item_id,)).fetchone()
+    if not current:
+        flash("Sermon not found.", "error")
+        return redirect(url_for("admin_sermons"))
+
+    thumbnail = save_upload(request.files.get("thumbnail"), "sermons") or current["thumbnail"]
+    db.execute(
+        """UPDATE sermons
+           SET title = ?, preacher = ?, scripture = ?, summary = ?, content = ?,
+               category_id = ?, thumbnail = ?, audio_url = ?, video_url = ?, featured = ?
+           WHERE id = ?""",
+        (
+            request.form["title"],
+            request.form["preacher"],
+            request.form.get("scripture"),
+            request.form.get("summary"),
+            request.form.get("content"),
+            request.form.get("category_id") or None,
+            thumbnail or "",
+            request.form.get("audio_url"),
+            request.form.get("video_url"),
+            1 if request.form.get("featured") else 0,
+            item_id,
+        ),
+    )
+    db.commit()
+    flash("Sermon saved.", "success")
+    return redirect(url_for("admin_sermons"))
+
+
 @app.route("/admin/devotionals", methods=["GET", "POST"])
 @admin_required
 def admin_devotionals():
@@ -868,6 +902,27 @@ def delete_devotional(item_id):
     return redirect(url_for("admin_devotionals"))
 
 
+@app.route("/admin/devotional/<int:item_id>/save", methods=["POST"])
+@admin_required
+def save_devotional(item_id):
+    db = get_db()
+    db.execute(
+        """UPDATE devotionals
+           SET title = ?, scripture = ?, content = ?, category_id = ?
+           WHERE id = ?""",
+        (
+            request.form["title"],
+            request.form.get("scripture"),
+            request.form["content"],
+            request.form.get("category_id") or None,
+            item_id,
+        ),
+    )
+    db.commit()
+    flash("Devotional saved.", "success")
+    return redirect(url_for("admin_devotionals"))
+
+
 @app.route("/admin/events", methods=["GET", "POST"])
 @admin_required
 def admin_events():
@@ -891,6 +946,28 @@ def delete_event(item_id):
     db.execute("DELETE FROM events WHERE id = ?", (item_id,))
     db.commit()
     flash("Event deleted.", "success")
+    return redirect(url_for("admin_events"))
+
+
+@app.route("/admin/event/<int:item_id>/save", methods=["POST"])
+@admin_required
+def save_event(item_id):
+    db = get_db()
+    db.execute(
+        """UPDATE events
+           SET title = ?, event_date = ?, location = ?, description = ?, event_type = ?
+           WHERE id = ?""",
+        (
+            request.form["title"],
+            request.form["event_date"],
+            request.form.get("location"),
+            request.form.get("description"),
+            request.form.get("event_type"),
+            item_id,
+        ),
+    )
+    db.commit()
+    flash("Event saved.", "success")
     return redirect(url_for("admin_events"))
 
 
@@ -923,6 +1000,22 @@ def delete_category(item_id):
     return redirect(url_for("admin_categories"))
 
 
+@app.route("/admin/category/<int:item_id>/save", methods=["POST"])
+@admin_required
+def save_category(item_id):
+    db = get_db()
+    try:
+        db.execute(
+            "UPDATE categories SET name = ?, description = ? WHERE id = ?",
+            (request.form["name"], request.form.get("description"), item_id),
+        )
+        db.commit()
+        flash("Category saved.", "success")
+    except sqlite3.IntegrityError:
+        flash("Category already exists.", "error")
+    return redirect(url_for("admin_categories"))
+
+
 @app.route("/admin/gallery", methods=["GET", "POST"])
 @admin_required
 def admin_gallery():
@@ -936,6 +1029,35 @@ def admin_gallery():
         return redirect(url_for("admin_gallery"))
     rows = db.execute("SELECT * FROM gallery ORDER BY created_at DESC").fetchall()
     return render_template("admin_gallery.html", gallery=rows)
+
+
+@app.route("/admin/gallery/<int:item_id>/save", methods=["POST"])
+@admin_required
+def save_gallery(item_id):
+    db = get_db()
+    current = db.execute("SELECT image_path FROM gallery WHERE id = ?", (item_id,)).fetchone()
+    if not current:
+        flash("Gallery image not found.", "error")
+        return redirect(url_for("admin_gallery"))
+
+    image_path = save_upload(request.files.get("image"), "gallery") or current["image_path"]
+    db.execute(
+        "UPDATE gallery SET title = ?, image_path = ? WHERE id = ?",
+        (request.form["title"], image_path, item_id),
+    )
+    db.commit()
+    flash("Gallery image saved.", "success")
+    return redirect(url_for("admin_gallery"))
+
+
+@app.route("/admin/gallery/<int:item_id>/delete", methods=["POST"])
+@admin_required
+def delete_gallery(item_id):
+    db = get_db()
+    db.execute("DELETE FROM gallery WHERE id = ?", (item_id,))
+    db.commit()
+    flash("Gallery image deleted.", "success")
+    return redirect(url_for("admin_gallery"))
 
 
 @app.context_processor

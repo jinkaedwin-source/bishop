@@ -2,7 +2,32 @@
 {% block content %}
 <section class="page-hero"><h1>Upload Gallery Images</h1><p>Add real church photos and ministry moments.</p></section>
 <section class="section content-layout">
-  <form method="post" enctype="multipart/form-data" class="content-panel stacked-form"><input name="title" placeholder="Image title" required><input type="file" name="image" required><button class="btn btn-gold">Upload</button></form>
-  <div class="gallery-grid">{% for item in gallery %}<figure><img src="{{ item.image_path if item.image_path.startswith('http') else url_for('static', filename=item.image_path) }}" alt="{{ item.title }}"><figcaption>{{ item.title }}</figcaption></figure>{% endfor %}</div>
+  <form method="post" enctype="multipart/form-data" class="content-panel stacked-form">
+    <input name="title" placeholder="Image title" required>
+    <input type="file" name="image" accept="image/*" required>
+    <button class="btn btn-gold">Upload</button>
+  </form>
+  <div class="content-panel admin-editor-list">
+    {% for item in gallery %}
+      <article class="admin-editor">
+        <img class="admin-preview" src="{{ item.image_path if item.image_path.startswith('http') else url_for('static', filename=item.image_path) }}" alt="{{ item.title }}">
+        <form action="{{ url_for('save_gallery', item_id=item.id) }}" method="post" enctype="multipart/form-data" class="stacked-form compact">
+          <div class="admin-editor-head">
+            <strong>Edit Gallery Image</strong>
+            <span>{{ item.created_at }}</span>
+          </div>
+          <input name="title" value="{{ item.title }}" placeholder="Image title" required>
+          <span class="form-help">Current image: {{ item.image_path }}</span>
+          <label>Replace image <input type="file" name="image" accept="image/*"></label>
+          <button class="btn btn-gold" type="submit">Save Image</button>
+        </form>
+        <form action="{{ url_for('delete_gallery', item_id=item.id) }}" method="post" class="admin-delete-form">
+          <button class="danger" type="submit">Delete</button>
+        </form>
+      </article>
+    {% else %}
+      <p>No gallery images have been uploaded yet.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}
